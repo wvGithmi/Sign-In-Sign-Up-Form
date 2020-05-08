@@ -1,25 +1,26 @@
 <?php
-session_start();
 
-require_once('connection.php');
+    session_start();
 
-$username = $_POST['username'];
-$password = $_POST['password'];
+    require_once('connection.php');
 
-$sql = "SELECT * FROM login_table WHERE username = ? AND password = ? LIMIT 1";
-$stmtselect = $db->prepare($sql);
-$result = $stmtselect->execute([$username, $password]);
+    $username = $_POST['username'];
+    $password = $_POST['password'];
 
-if($result){
-    $user = $stmtselect->fetch(PDO::FETCH_ASSOC);
-    if($stmtselect->rowCount() > 0){
-        $_SESSION['userlogin'] = $user;
-        echo '1';
+    $sql = "SELECT * FROM login_table WHERE username = ? AND password = ? LIMIT 1";
+    $stmtselect = $db->prepare($sql);
+    $result = $stmtselect->execute([$username, $password]);
+
+    if($result){
+        $user = $stmtselect->fetch(PDO::FETCH_ASSOC);
+        if($stmtselect->rowCount() > 0){
+            $_SESSION['userlogin'] = $user;
+            echo '1';
+        }else{
+            echo 'There no user for that combo';
+        }
     }else{
-        echo 'There no user for that combo';
+        echo 'There were errors while connecting to database.';
     }
-}else{
-    echo 'There were errors while connecting to database.';
-}
 
 ?>
